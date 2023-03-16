@@ -79,6 +79,7 @@ while True:
         result = eval(" ".join(full_operation))
         window["textField"].update(result)
         full_operation = []
+        current_num = [str(result)]
 
     if event == "Clear":
         current_num = []
