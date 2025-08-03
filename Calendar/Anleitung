@@ -1,0 +1,134 @@
+# Step-by-Step Anleitung: Wochenplaner mit Kalender-Export
+
+---
+
+## Schritt 1: Entwicklungsumgebung vorbereiten
+
+* Installiere Python (wenn noch nicht da) — empfehlenswert >= 3.8
+* Installiere Bibliotheken:
+
+  * `ics` (zum Erstellen von Kalenderdateien)
+  * Optional: `pickle` (für das Speichern von Terminen)
+* Lege einen Projektordner an, z. B. `wochenplaner`
+
+---
+
+## Schritt 2: Datenstrukturen & Modelle definieren
+
+* Definiere eine **Event-Klasse** mit Attributen:
+
+  * Titel / Name (String)
+  * Dauer (in Minuten)
+  * Startzeit (optional, wenn Zeit fix ist)
+  * Priorität (z.B. 1–5)
+  * Wiederholung (wöchentlich, monatlich, etc.)
+  * Kategorie (z.B. „Fix“, „Flexibel“, „Langfristig“)
+* Definiere eine Struktur für die **Wochenplanung**:
+
+  * 7 Tage, jeder Tag mit Zeitfenstern (z. B. 6:00 bis 22:00, je nach Nutzerinput)
+  * Zeitfenster mit Events belegt oder frei
+
+---
+
+## Schritt 3: Nutzer-Input abfragen
+
+* Frage ab:
+
+  * „Ab wie viel Uhr darf geplant werden?“ (z. B. 6 Uhr)
+  * „Bis wie viel Uhr soll geplant werden?“ (z. B. 22 Uhr)
+  * Langfristige Termine (z. B. „1.12.23 – Arzttermin von 14 bis 15 Uhr“)
+  * Wöchentliche oder tägliche feste Termine (z. B. „Mo 18-19 Uhr – Yoga“)
+  * Flexible Aktivitäten mit Dauer und Priorität (z. B. „Lesen, 45 Min, Prio 3“)
+* Frage, ob die langfristigen Termine jetzt schon in den Kalender eingetragen werden sollen.
+
+---
+
+## Schritt 4: Terminverwaltung & Speicher
+
+* Implementiere eine einfache Speicherung der Termine (z. B. mit `pickle` oder als JSON), damit Termine über Sessions erhalten bleiben.
+* Bei Programmstart: Lade bestehende Termine (langfristig, fix, flexibel)
+* Möglichkeit hinzufügen, Termine zu löschen oder zu bearbeiten.
+
+---
+
+## Schritt 5: Planungslogik implementieren
+
+* **Feste Termine** mit Startzeit und Dauer zuerst einplanen (weil Zeit fix ist)
+* Flexible Termine in verbleibende Zeitfenster einfügen
+* Prioritäten beachten:
+
+  * Höhere Priorität zuerst einplanen
+  * Wenn nicht genug Zeit, low-prio Termine verschieben oder in nächste Woche schieben
+* Termine dürfen die eingegebenen Zeitlimits (Start- und Endzeit) nicht überschreiten
+* Plane Tag für Tag, am besten in zeitlicher Reihenfolge
+
+---
+
+## Schritt 6: Wochen-, Tages- und Monatsübersicht erzeugen
+
+* Erstelle Funktionen, die die Planung für:
+
+  * Eine Woche (7 Tage)
+  * Einen Tag (24h-Zeitslots)
+  * Einen Monat (übersichtlich, mit fixen & langfristigen Terminen)
+* Die Monatsplanung ist primär eine Übersicht der langfristigen Termine und wöchentlichen Fixtermine.
+
+---
+
+## Schritt 7: Kalender-Datei (.ics) erstellen
+
+* Nutze die `ics`-Bibliothek, um aus den geplanten Events eine Kalenderdatei zu erzeugen
+* Für jeden Termin ein `Event`-Objekt erzeugen mit Start- und Endzeit
+* Kalender speichern als `meine_woche.ics`
+* Diese Datei kannst du dann in Google Kalender, Outlook oder dein Handy importieren
+
+---
+
+## Schritt 8: Erweiterungen & Benutzerfreundlichkeit
+
+* Optional: CLI-Menü zur Auswahl von Wochen-, Tages- oder Monatsplanung
+* Feedback einbauen: Nach Planung fragen, ob alles passt oder ob Termine anders gewichtet werden sollen
+* Planungsparameter speichern (z. B. Zeitlimits, Lieblingsaktivitäten)
+* Später GUI oder Web-App möglich (z. B. Flask, Tkinter), aber erstmal CLI
+
+---
+
+# Wie du Schritt für Schritt vorgehst:
+
+### 1. **Event-Klasse und Grundstruktur**
+
+* Schreibe eine Klasse `Event` mit allen notwendigen Feldern
+* Schreibe eine Klasse `Planner` mit Methoden für Termineintrag, Prüfung von Kollisionen, Speichern/Laden
+
+### 2. **Nutzerabfragen**
+
+* Schreibe ein Modul, das über `input()` deine Wünsche abfragt und Events erzeugt
+* Speichere diese Events in der `Planner`-Instanz
+
+### 3. **Planung implementieren**
+
+* Schreibe eine Methode, die zuerst feste Events platziert
+* Dann flexible Events nach Priorität verteilt
+
+### 4. **Kalender exportieren**
+
+* Erzeuge mit `ics` ein Kalenderobjekt
+* Füge alle geplanten Events hinzu
+* Speichere die Datei
+
+### 5. **Testen**
+
+* Starte mit wenigen Terminen
+* Prüfe den .ics-Export im Kalenderprogramm
+
+---
+
+# Warum so starten?
+
+* Schrittweise Entwicklung hält es überschaubar und du hast immer ein nutzbares Ergebnis
+* Du lernst wichtige Konzepte: Datenmodellierung, Zeitmanagement, Speicherung, Dateiexport
+* Du baust eine solide Basis, die du später erweitern kannst (z. B. KI-gestützte Priorisierung)
+
+---
+
+Wenn du willst, kann ich dir auch für den ersten Schritt (Event-Klasse & Grundgerüst) die Details erklären. Sag einfach Bescheid!
